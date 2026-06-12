@@ -65,37 +65,77 @@
         git-hooks.flakeModule
         treefmt-nix.flakeModule
       ];
-      perSystem = {pkgs,...}: {
-        devenv.shells.default = {
-          imports = [
-          devlib.devenvModules.git
-          devlib.devenvModules.nix
-          devlib.devenvModules.shell
-          devlib.devenvModules.shikanime-studio
-        ];
+      perSystem =
         {
-          devenv.shells = {
-            default = {
-              imports = [
-                devlib.devenvModules.shikanime-studio
-              ];
-              cachix.push = "shikanime";
-              packages = [
-                pkgs.gh
-                pkgs.nushell
-                pkgs.sapling
-                pkgs.skaffold
-                pkgs.skopeo
-              ];
+          self',
+          lib,
+          pkgs,
+          ...
+        }:
+        with lib;
+        {
+          devenv.shells.default = {
+            imports = [
+              inputs.devlib.devenvModules.git
+              inputs.devlib.devenvModules.nix
+              inputs.devlib.devenvModules.opentofu
+              inputs.devlib.devenvModules.shell
+              inputs.devlib.devenvModules.shikanime-studio
+            ];
+            github = {
+              settings.workflows = {
+                integration = {
+                  jobs.skaffold = {
+                    needs = [ "nix" ];
+                    secrets.CACHIX_AUTH_TOKEN = "\${{ secrets.CACHIX_AUTH_TOKEN }}";
+                  };
+                  on.workflow_call.secrets.CACHIX_AUTH_TOKEN.required = mkDefault true;
+                };
+
+                release = {
+                  jobs.skaffold = {
+                    needs = [ "nix" ];
+                    secrets.CACHIX_AUTH_TOKEN = "\${{ secrets.CACHIX_AUTH_TOKEN }}";
+                  };
+                  on.workflow_call.secrets.CACHIX_AUTH_TOKEN.required = mkDefault true;
+                };
+
+                skaffold.on.workflow_call.secrets.CACHIX_AUTH_TOKEN.required = mkDefault true;
+
+                wakabox = {
+                  name = "Wakabox";
+                  on.schedule = [
+                    { cron = "0 0 * * *"; }
+                  ];
+                  jobs.wakabox = {
+                    runs-on = "ubuntu-latest";
+                    steps = [
+                      {
+                        uses = "matchai/waka-box@v5.0.0";
+                        env = {
+                          GH_TOKEN = "\${{ secrets.WAKABOX_GITHUB_TOKEN }}";
+                          GIST_ID = "\${{ vars.WAKABOX_GITHUB_GIST_ID }}";
+                          WAKATIME_API_KEY = "\${{ secrets.WAKATIME_API_KEY }}";
+                        };
+                      }
+                    ];
+                  };
+                  permissions.contents = "read";
+                };
+              };
+
+              workflows.skaffold = {
+                enable = true;
+                settings.setup-nix = {
+                  cachix-auth-token = "\${{ secrets.CACHIX_AUTH_TOKEN }}";
+                  extra-platforms = "arm64";
+                };
+              };
             };
-            build = {
-              containers = pkgs.lib.mkForce { };
-              packages = [
-                pkgs.nushell
-                pkgs.skaffold
-                pkgs.skopeo
-              ];
-            };
+
+            packages = with pkgs; [
+              skaffold
+            ];
           };
           packages = {
             base = pkgs.callPackage ./pkgs/base { };
@@ -103,15 +143,12 @@
             mlflow = pkgs.callPackage ./pkgs/mlflow { inherit (self'.packages) base; };
             postgresql = pkgs.callPackage ./pkgs/postgresql { inherit (self'.packages) base; };
             radarr = pkgs.callPackage ./pkgs/radarr { inherit (self'.packages) base; };
-            redis = pkgs.callPackage ./pkgs/redis { inherit (self'.packages) base; };
             sonarr = pkgs.callPackage ./pkgs/sonarr { inherit (self'.packages) base; };
             syncthing = pkgs.callPackage ./pkgs/syncthing { inherit (self'.packages) base; };
             vaultwarden = pkgs.callPackage ./pkgs/vaultwarden { inherit (self'.packages) base; };
             whisparr = pkgs.callPackage ./pkgs/whisparr { inherit (self'.packages) base; };
           };
         };
-        };
-      };
       systems = [
         "x86_64-linux"
         "aarch64-linux"
