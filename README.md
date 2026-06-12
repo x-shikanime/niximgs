@@ -4,33 +4,35 @@
 
 <!-- markdownlint-enable first-line-heading -->
 
-## niximgs
+# niximgs
 
-Hey 🌸 I'm Shikanime Deva, this is a repository of well-known applications containerized using nixpkgs.
+Hey 🌸 I'm Shikanime Deva, this is a repository of well-known applications
+containerized using nixpkgs.
 
-This repository provides Docker images for popular applications built with Nix, ensuring reproducible and reliable container builds.
+This repository provides Docker images for popular applications built with Nix,
+ensuring reproducible and reliable container builds.
 
-### Available Applications
+## Available Applications
 
 - **jellyfin** - Media server for managing and streaming media
 - **mlflow** - Machine learning lifecycle management platform
 - **postgresql** - Advanced open-source relational database
 - **radarr** - Movie collection manager for Usenet and BitTorrent users
-- **redis** - In-memory data structure store
 - **sonarr** - TV series collection manager for Usenet and BitTorrent users
 - **syncthing** - Continuous file synchronization program
 - **vaultwarden** - Unofficial Bitwarden compatible server written in Rust
 - **whisparr** - Adult movie collection manager
 
-### Usage
+## Usage
 
-All images are built using Nix and published to GitHub Container Registry. You can pull them using:
+All images are built using Nix and published to GitHub Container Registry. You
+can pull them using:
 
 ```bash
 docker pull ghcr.io/shikanime/<application>:latest
 ```
 
-### Building
+## Building
 
 To build the images locally:
 
