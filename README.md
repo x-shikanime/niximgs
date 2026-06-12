@@ -6,9 +6,11 @@
 
 ## niximgs
 
-Hey 🌸 I'm Shikanime Deva, this is a repository of well-known applications containerized using nixpkgs.
+Hey 🌸 I'm Shikanime Deva, this is a repository of well-known applications
+containerized using nixpkgs.
 
-This repository provides Docker images for popular applications built with Nix, ensuring reproducible and reliable container builds.
+This repository provides Docker images for popular applications built with Nix,
+ensuring reproducible and reliable container builds.
 
 ### Available Applications
 
@@ -24,7 +26,8 @@ This repository provides Docker images for popular applications built with Nix, 
 
 ### Usage
 
-All images are built using Nix and published to GitHub Container Registry. You can pull them using:
+All images are built using Nix and published to GitHub Container Registry. You
+can pull them using:
 
 ```bash
 docker pull ghcr.io/shikanime/<application>:latest
