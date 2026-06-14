@@ -26,6 +26,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nix-hermes-agent = {
+      url = "github:0xrsydn/nix-hermes-agent";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 
     treefmt-nix = {
@@ -50,11 +55,12 @@
   };
 
   outputs =
-    inputs@{
+    inputs @{
       devenv,
       devlib,
       flake-parts,
       git-hooks,
+      nix-hermes-agent,
       treefmt-nix,
       ...
     }:
@@ -72,6 +78,9 @@
           pkgs,
           ...
         }:
+        let
+          hermes-agent-pkg = nix-hermes-agent.packages.${pkgs.system}.hermes-agent;
+        in
         with lib;
         {
           devenv.shells.default = {
@@ -147,6 +156,10 @@
             syncthing = pkgs.callPackage ./pkgs/syncthing { inherit (self'.packages) base; };
             vaultwarden = pkgs.callPackage ./pkgs/vaultwarden { inherit (self'.packages) base; };
             whisparr = pkgs.callPackage ./pkgs/whisparr { inherit (self'.packages) base; };
+            hermes-agent = pkgs.callPackage ./pkgs/hermes-agent {
+              inherit (self'.packages) base;
+              inherit hermes-agent-pkg;
+            };
           };
         };
       systems = [
