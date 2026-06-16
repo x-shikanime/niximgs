@@ -4,35 +4,35 @@ metadata:
   name: niximgs
 build:
   artifacts:
-    - image: ghcr.io/shikanime/niximgs/jellyfin
+    - image: ghcr.io/x-shikanime/niximgs/jellyfin
       custom:
         buildCommand:
           nix run github:shikanime-studio/nix-containers -- skaffold build
-    - image: ghcr.io/shikanime/niximgs/mlflow
+    - image: ghcr.io/x-shikanime/niximgs/mlflow
       custom:
         buildCommand:
           nix run github:shikanime-studio/nix-containers -- skaffold build
-    - image: ghcr.io/shikanime/niximgs/postgresql
+    - image: ghcr.io/x-shikanime/niximgs/postgresql
       custom:
         buildCommand:
           nix run github:shikanime-studio/nix-containers -- skaffold build
-    - image: ghcr.io/shikanime/niximgs/radarr
+    - image: ghcr.io/x-shikanime/niximgs/radarr
       custom:
         buildCommand:
           nix run github:shikanime-studio/nix-containers -- skaffold build
-    - image: ghcr.io/shikanime/niximgs/sonarr
+    - image: ghcr.io/x-shikanime/niximgs/sonarr
       custom:
         buildCommand:
           nix run github:shikanime-studio/nix-containers -- skaffold build
-    - image: ghcr.io/shikanime/niximgs/syncthing
+    - image: ghcr.io/x-shikanime/niximgs/syncthing
       custom:
         buildCommand:
           nix run github:shikanime-studio/nix-containers -- skaffold build
-    - image: ghcr.io/shikanime/niximgs/vaultwarden
+    - image: ghcr.io/x-shikanime/niximgs/vaultwarden
       custom:
         buildCommand:
           nix run github:shikanime-studio/nix-containers -- skaffold build
-    - image: ghcr.io/shikanime/niximgs/whisparr
+    - image: ghcr.io/x-shikanime/niximgs/whisparr
       custom:
         buildCommand:
           nix run github:shikanime-studio/nix-containers -- skaffold build
